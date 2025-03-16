@@ -1,0 +1,7 @@
+---
+
+  - name: install rsync service
+    become: yes
+    apt: 
+      name: 'rsync' 
+      state: 'latest'

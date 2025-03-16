@@ -1,0 +1,19 @@
+---
+  - name: create service descriptor for scheduled backup
+    become: yes
+    template: 
+      src: 'backup-schedule.service.j2' 
+      dest: '/etc/systemd/system/backup-schedule.service' 
+      mode: '0644'
+  - name: create timer descriptor for scheduled backup
+    become: yes
+    template: 
+      src: 'backup-schedule.timer.j2' 
+      dest: '/etc/systemd/system/backup-schedule.timer' 
+      mode: '0644'
+  - name: enable schedule timer descriptor
+    become: yes
+    systemd: 
+      name: 'backup-schedule.timer' 
+      enabled: 'yes'
+      state: 'started'

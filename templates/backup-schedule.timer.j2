@@ -1,0 +1,8 @@
+[Unit]
+Description=scheduled backup
+
+[Timer]
+OnCalendar=*:0/{{ backup_schedule.frequency_in_minutes }}
+
+[Install]
+WantedBy=timers.target

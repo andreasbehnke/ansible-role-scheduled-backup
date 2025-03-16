@@ -1,0 +1,13 @@
+#!/bin/bash
+errors=
+{% for host in groups[scheduled_backup_source_group_name] %}
+{% for source in hostvars[host][scheduled_backup_source_directory_names] %}
+echo '===============================================' >> /var/log/backup/{{ host }}.log
+date -Is  >> /var/log/backup/{{ host }}.log
+rsync --stats {{ backup_controller_rsync_opts | default(source.rsync_opts) }} {{ source.user }}@{{ hostvars[host]['ansible_host'] }}:{{ source.path }} {{ backup_device.path }}/{{ host }} &>> /var/log/backup/{{ host }}.log
+if [ ! $? -eq 0 ]
+then
+    error="${error}{{ host }} "
+fi
+{% endfor %}
+{% endfor %}
